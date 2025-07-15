@@ -1,0 +1,77 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+env:
+  PHP_VERSION: 8.3
+
+jobs:
+  lint:
+    name: Lint with parallel-lint and PHPCS
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ env.PHP_VERSION }}
+          tools: composer
+
+      - name: Install composer dependencies
+        run: composer install
+
+      - name: Run parallel-lint
+        run: vendor/bin/parallel-lint . --exclude vendor
+
+      - name: Run phpcs
+        run: vendor/bin/phpcs -p -s
+
+  test-highlight:
+    name: "PHPUnit"
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        php: [8.3, 8.4]
+        commonmark: ["^2.7"]
+        python: [3.11, 3.12, 3.13]
+        pygments: ["2.17.*", "2.18.*", "2.19.*"]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: "actions/setup-python@v5"
+        with:
+          python-version: "${{ matrix.python }}"
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          tools: composer
+
+      - name: Set league/commonmark version
+        run: composer require "league/commonmark:${{ matrix.commonmark }}"
+
+      - name: Install composer dependencies
+        run: composer install
+
+      - name: Report python version
+        run: python3 --version
+
+      - name: Install pip
+        run: sudo apt-get install -y python3-pip
+
+      - name: Install pygments
+        run: pip install Pygments==${{ matrix.pygments }} --break-system-packages
+
+      - name: Run phpunit
+        run: vendor/bin/phpunit

@@ -1,0 +1,9 @@
+# Text
+*.php text eol=lf
+*.md text eol=lf
+*.html text eol=lf
+*.xml text eol=lf
+*.yml text eol=lf
+*.json text eol=lf
+*.gitattributes text eol=lf
+*.gitignore text eol=lf

@@ -1,0 +1,9 @@
+# Composer
+composer.lock
+vendor
+
+# Tests
+.phpunit.result.cache
+
+# Code coverage reports
+html-coverage

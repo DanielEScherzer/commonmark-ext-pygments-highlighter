@@ -1,0 +1,47 @@
+{
+	"name": "danielescherzer/commonmark-ext-pygments-highlighter",
+	"description": "CommonMark extension for code highlighting with Pygments",
+	"type": "commonmark-extension",
+	"authors": [
+		{
+			"name": "Daniel E Scherzer",
+			"homepage": "https://github.com/DanielEScherzer"
+		}
+	],
+	"license": "MIT",
+	"require": {
+		"php": "^8.3 || ^8.4",
+		"league/commonmark": "^2.7",
+		"ramsey/pygments": "^3.0"
+	},
+	"require-dev": {
+		"danielescherzer/common-phpcs": "0.0.2",
+		"phpunit/phpunit": "~12.0",
+		"php-parallel-lint/php-parallel-lint": "^1.4",
+		"symfony/yaml": "6.4.* || 7.2.* || 7.3.*"
+	},
+	"autoload": {
+		"psr-4": {
+			"DanielEScherzer\\CommonMarkPygmentsHighlighter\\": "src/"
+		}
+	},
+	"scripts": {
+		"parallel-lint": "parallel-lint . --exclude vendor",
+		"phpcs": "phpcs -p -s",
+		"phpunit": "php -d extension=pcov.so -d pcov.enabled=1 -d pcov.directory=. vendor/bin/phpunit",
+		"phpunit:update-expected": "TESTS_UPDATE_EXPECTED=1 php vendor/bin/phpunit",
+		"lint": [
+			"@parallel-lint",
+			"@phpcs"
+		],
+		"test": [
+			"@phpunit",
+			"@lint"
+		]
+	},
+	"config": {
+		"allow-plugins": {
+			"dealerdirect/phpcodesniffer-composer-installer": true
+		}
+	}
+}
