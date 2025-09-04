@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document xmlns="http://commonmark.org/xml/1.0">
+    <heading level="1">
+        <text>Testing</text>
+    </heading>
+    <paragraph>
+        <text>Before</text>
+    </paragraph>
+    <code_block info="php startinline=True">class User {
+	private int $id;
+	private string $name;
+
+	public function __construct( int $id, string $name ) {
+		$this-&gt;id = $id;
+		$this-&gt;name = $name;
+	}
+}
+</code_block>
+    <paragraph>
+        <text>after</text>
+    </paragraph>
+</document>
