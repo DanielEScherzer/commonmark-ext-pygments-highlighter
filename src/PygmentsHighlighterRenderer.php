@@ -61,11 +61,21 @@ class PygmentsHighlighterRenderer implements
 			} else {
 				$pygments = new Pygments( $path );
 			}
+			$options = [];
+			if ( count( $infoWords ) > 1 ) {
+				foreach ( array_slice( $infoWords, 1 ) as $opt ) {
+					$parts = explode( '=', $opt );
+					if ( count( $parts ) === 2 ) {
+						$options[ $parts[0] ] = $parts[1];
+					}
+				}
+			}
 			try {
 				$rendered = $pygments->highlight(
 					$node->getLiteral(),
 					$lang,
-					'html'
+					'html',
+					$options
 				);
 			} catch ( PygmentizeProcessFailed $e ) {
 				$onException = $this->config->get(
